@@ -90,7 +90,7 @@ if response.status_code == 200:
 
         # Display the first few rows of the dataframe
         print(df.head())
-        print('\nData loaded successfully.\n')
+        print('\nKaggle data loaded successfully.\n')
     else:
         print("The downloaded file is not a valid zip file.")
 else:
