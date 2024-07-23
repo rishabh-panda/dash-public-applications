@@ -41,7 +41,7 @@ response = requests.get(dataset_url, headers=headers, stream=True, verify=False)
 zip_buffer = BytesIO()
 
 total_size = int(response.headers.get('content-length', 0))
-chunk_size = total_size // 5
+chunk_size = total_size // 4
 
 if response.status_code == 200:
     for chunk in response.iter_content(chunk_size=chunk_size):
@@ -68,7 +68,7 @@ if response.status_code == 200:
         data_path = os.path.join(data_dir, csv_files[0])
 
         # Load a sample of the dataset to infer data types
-        total_rows = sum(1 for row in open(data_path)) - 1  # Subtract 1 for the header
+        total_rows = sum(1 for _ in open(data_path)) - 1  # Subtract 1 for the header
         ten_percent_rows = int(total_rows * 0.10)
         sample_df = pd.read_csv(data_path, nrows=ten_percent_rows)
         dtype_spec = sample_df.dtypes.apply(lambda x: x.name).to_dict()
