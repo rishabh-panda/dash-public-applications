@@ -88,10 +88,8 @@ if response.status_code == 200:
         except ImportError:
             df = pd.read_csv(data_path, engine='c', dtype=dtype_spec)
 
-        # Display the first few rows of the dataframe
-        print(df.head())
-        print('\nKaggle data loaded successfully.\n')
+        print('\nKaggle data loaded successfully\n')
     else:
-        print("The downloaded file is not a valid zip file.")
+        print("The downloaded file is not a valid zip file")
 else:
     print(f"Failed to download the dataset. Status code: {response.status_code}")
