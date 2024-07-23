@@ -40,8 +40,11 @@ response = requests.get(dataset_url, headers=headers, stream=True, verify=False)
 # Use a temporary in-memory buffer to handle the zip file
 zip_buffer = BytesIO()
 
+total_size = int(response.headers.get('content-length', 0))
+chunk_size = total_size // 5
+
 if response.status_code == 200:
-    for chunk in response.iter_content(chunk_size=8192):
+    for chunk in response.iter_content(chunk_size=chunk_size):
         zip_buffer.write(chunk)
 
     # Verify if the file is a valid zip file
