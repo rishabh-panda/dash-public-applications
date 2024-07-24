@@ -40,7 +40,6 @@ layout = html.Div(
                         'padding': '5px 15px',
                         'border': '1px solid #ccc',
                         'borderRadius': '10px',
-                        'backgroundColor': '#E5E5E5',
                         'cursor': 'pointer',
                         'fontFamily': 'Arial',
                         'textAlign': 'center'
@@ -133,6 +132,29 @@ def update_columns(*args):
     if any(rename_clicks):
         return [{'name': new_name, 'id': col} for new_name, col in zip(new_column_names, df.columns)]
     return [{'name': col, 'id': col} for col in df.columns]
+
+# Callback to update the RadioItems styles
+@app.callback(
+    Output('data-mode', 'options'),
+    Input('data-mode', 'value')
+)
+def update_radio_styles(selected_value):
+    options = [
+        {'label': 'Live', 'value': 'live'},
+        {'label': 'Extract', 'value': 'extract'}
+    ]
+    for option in options:
+        if option['value'] == selected_value:
+            option['label'] = html.Span(
+                option['label'],
+                style={'color': '#FFFFFF', 'backgroundColor': '#CC0000', 'padding': '5px 15px', 'borderRadius': '10px'}
+            )
+        else:
+            option['label'] = html.Span(
+                option['label'],
+                style={'color': '#000000', 'backgroundColor': '#ECECEC', 'padding': '5px 15px', 'borderRadius': '10px'}
+            )
+    return options
 
 # Register the layout with the Dash app
 app.layout = layout
