@@ -18,12 +18,40 @@ layout = html.Div(
                 'height': '5%',
                 'display': 'flex',
                 'alignItems': 'center',
-                'justifyContent': 'left'
+                'justifyContent': 'space-between'
             },
             children=[
+                # Master Heading
                 html.H1(
-                    children='Retail inventory optimizer web application',
+                    children='Retail inventory optimizer',
                     style={'margin': '0', 'fontFamily': 'Arial'}
+                ),
+                # Live and Extract Buttons
+                dcc.RadioItems(
+                    id='data-mode',
+                    options=[
+                        {'label': 'Live', 'value': 'live'},
+                        {'label': 'Extract', 'value': 'extract'}
+                    ],
+                    value='live',
+                    labelStyle={
+                        'display': 'inline-block',
+                        'margin': '0 10px',
+                        'padding': '5px 15px',
+                        'border': '1px solid #ccc',
+                        'borderRadius': '10px',
+                        'backgroundColor': '#E5E5E5',
+                        'cursor': 'pointer',
+                        'fontFamily': 'Arial',
+                        'textAlign': 'center'
+                    },
+                    inputStyle={
+                        'marginRight': '5px'
+                    },
+                    style={
+                        'display': 'flex',
+                        'alignItems': 'center'
+                    }
                 )
             ]
         ),
@@ -42,16 +70,10 @@ layout = html.Div(
                     style={'margin': '10px'},
                     children=[
                         html.Label(f'{col} '),
-                        dcc.Input(id=f'input-{col}', type='text', value=col)
+                        dcc.Input(id=f'input-{col}', type='text', value=col),
+                        html.Button('Rename', id=f'rename-button-{col}', n_clicks=0)
                     ]
                 ) for col in df.columns
-            ]
-        ),
-        
-        html.Div(
-            style={'backgroundColor': '#E1E6FF', 'textAlign': 'center', 'padding': '10px'},
-            children=[
-                html.Button('Rename', id='rename-button', n_clicks=0)
             ]
         ),
 
@@ -102,11 +124,13 @@ layout = html.Div(
 # Callback to update the column names
 @app.callback(
     Output('data-table', 'columns'),
-    Input('rename-button', 'n_clicks'),
+    [Input(f'rename-button-{col}', 'n_clicks') for col in df.columns],
     [State(f'input-{col}', 'value') for col in df.columns]
 )
-def update_columns(n_clicks, *new_column_names):
-    if n_clicks > 0:
+def update_columns(*args):
+    rename_clicks = args[:len(df.columns)]
+    new_column_names = args[len(df.columns):]
+    if any(rename_clicks):
         return [{'name': new_name, 'id': col} for new_name, col in zip(new_column_names, df.columns)]
     return [{'name': col, 'id': col} for col in df.columns]
 
