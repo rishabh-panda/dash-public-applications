@@ -102,6 +102,58 @@ layout = html.Div(
             ]
         ),
 
+        # Data Type Change Inputs Container
+        html.Div(
+            style={
+                'backgroundColor': '#E1E1E1',
+                'border': '1px solid #ccc',
+                'height': '6%',
+                'padding': '8px',
+                'display': 'flex',
+                'justifyContent': 'space-between',
+                'alignItems': 'left',
+                'flexWrap': 'nowrap',
+                'overflowX': 'auto',
+                'position': 'relative',
+                'borderRadius': '10px',
+                'marginTop': '10px'
+            },
+            children=[
+                html.Div(
+                    style={'margin': '0 5px'},
+                    children=[
+                        html.Label(
+                            f'{col} ',
+                            style={'fontSize': '12px', 'marginRight': '5px'}
+                        ),
+                        dcc.Input(
+                            id=f'dtype-input-{col}',
+                            type='text',
+                            value='string',  # Default data type
+                            style={'width': '80px', 
+                                   'height': '20px', 
+                                   'fontSize': '12px', 
+                                   'border': '1px solid #ccc', 
+                                   'borderRadius': '8px'}
+                        ),
+                    ]
+                ) for col in df.columns
+            ] + [
+                html.Button(
+                    'Typecast',
+                    id='typecast-button',
+                    n_clicks=0,
+                    style={
+                        'fontSize': '12px',
+                        'padding': '2px 5px',
+                        'position': 'absolute',
+                        'bottom': '10px',
+                        'right': '20px'
+                    }
+                )
+            ]
+        ),
+
         # Table Container
         html.Div(
             style={

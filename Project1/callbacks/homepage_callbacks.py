@@ -1,3 +1,4 @@
+import re
 from dash import Input, Output, State, html
 from app import app
 from data.data_loader import df
@@ -35,3 +36,27 @@ def update_radio_styles(selected_value):
                 style={'color': '#000000', 'backgroundColor': '#ECECEC', 'padding': '5px 15px', 'borderRadius': '10px'}
             )
     return options
+
+# Callback to change data types of columns
+@app.callback(
+    Output('data-table', 'data'),
+    Input('typecast-button', 'n_clicks'),
+    [State(f'dtype-input-{col}', 'value') for col in df.columns]
+)
+def change_data_types(n_clicks, *new_data_types):
+    if n_clicks > 0:
+        for col, dtype in zip(df.columns, new_data_types):
+            match = re.match(r'^(float|double)\((\d+)\)$', dtype)
+            if dtype == 'int':
+                df[col] = df[col].astype(int)
+            elif match:
+                decimal_places = int(match.group(2))
+                df[col] = df[col].astype(float).round(decimal_places)
+            elif dtype == 'float':
+                df[col] = df[col].astype(float)
+            elif dtype == 'double':
+                df[col] = df[col].astype(float)
+            elif dtype == 'string':
+                df[col] = df[col].astype(str)
+        return df.to_dict('records')
+    return df.to_dict('records')
