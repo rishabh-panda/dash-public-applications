@@ -23,8 +23,8 @@ layout = html.Div(
             children=[
                 # Master Heading
                 html.H1(
-                    children='Retail inventory optimizer',
-                    style={'margin': '0', 'fontFamily': 'Arial'}
+                    children='Retail inventory optimizer application | WIP version',
+                    style={'margin': '0', 'fontFamily': 'Arial', 'color': '#848484'}
                 ),
                 # Live and Extract Buttons
                 dcc.RadioItems(
@@ -40,6 +40,7 @@ layout = html.Div(
                         'padding': '5px 15px',
                         'border': '1px solid #ccc',
                         'borderRadius': '10px',
+                        'backgroundColor': '#ECECEC',
                         'cursor': 'pointer',
                         'fontFamily': 'Arial',
                         'textAlign': 'center'
@@ -61,18 +62,45 @@ layout = html.Div(
                 'backgroundColor': '#E1E6FF',
                 'padding': '10px',
                 'display': 'flex',
-                'flexWrap': 'wrap',
-                'justifyContent': 'space-around'
+                'justifyContent': 'space-between',
+                'alignItems': 'center',
+                'flexWrap': 'nowrap',
+                'overflowX': 'auto',
+                'position': 'relative'
             },
             children=[
                 html.Div(
-                    style={'margin': '10px'},
+                    style={'margin': '0 5px'},
                     children=[
-                        html.Label(f'{col} '),
-                        dcc.Input(id=f'input-{col}', type='text', value=col),
-                        html.Button('Rename', id=f'rename-button-{col}', n_clicks=0)
+                        html.Label(
+                            f'{col} ',
+                            style={'fontSize': '12px', 'marginRight': '5px'}
+                        ),
+                        dcc.Input(
+                            id=f'input-{col}',
+                            type='text',
+                            value=col,
+                            style={'width': '80px', 
+                                   'height': '20px', 
+                                   'fontSize': '12px', 
+                                   'border': '1px solid #ccc', 
+                                   'borderRadius': '10px'}
+                        ),
                     ]
                 ) for col in df.columns
+            ] + [
+                html.Button(
+                    'Rename',
+                    id='rename-button',
+                    n_clicks=0,
+                    style={
+                        'fontSize': '12px',
+                        'padding': '2px 5px',
+                        'position': 'absolute',
+                        'bottom': '0px',
+                        'right': '20px'
+                    }
+                )
             ]
         ),
 
@@ -98,7 +126,7 @@ layout = html.Div(
                     },
                     style_header={
                         'fontWeight': 'bold',
-                        'backgroundColor': '#284BFA',
+                        'backgroundColor': '#CC0000',
                         'color': '#FFFFFF',
                         'fontFamily': 'Arial'
                     },
@@ -123,13 +151,11 @@ layout = html.Div(
 # Callback to update the column names
 @app.callback(
     Output('data-table', 'columns'),
-    [Input(f'rename-button-{col}', 'n_clicks') for col in df.columns],
+    Input('rename-button', 'n_clicks'),
     [State(f'input-{col}', 'value') for col in df.columns]
 )
-def update_columns(*args):
-    rename_clicks = args[:len(df.columns)]
-    new_column_names = args[len(df.columns):]
-    if any(rename_clicks):
+def update_columns(n_clicks, *new_column_names):
+    if n_clicks > 0:
         return [{'name': new_name, 'id': col} for new_name, col in zip(new_column_names, df.columns)]
     return [{'name': col, 'id': col} for col in df.columns]
 
