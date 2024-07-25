@@ -1,9 +1,4 @@
-import dash
-from dash import dash_table
-from dash import dcc, html
-import pandas as pd
-from dash.dependencies import Input, Output, State
-from app import app
+from dash import dash_table, dcc, html
 from data.data_loader import df
 
 # Define the layout of the homepage
@@ -59,7 +54,8 @@ layout = html.Div(
         # Column Renaming Inputs Container
         html.Div(
             style={
-                'backgroundColor': '#E1E6FF',
+                'backgroundColor': '#E1E1E1',
+                'border': '1px solid #ccc',
                 'height': '6%',
                 'padding': '8px',
                 'display': 'flex',
@@ -149,40 +145,3 @@ layout = html.Div(
         )
     ]
 )
-
-# Callback to update the column names
-@app.callback(
-    Output('data-table', 'columns'),
-    Input('rename-button', 'n_clicks'),
-    [State(f'input-{col}', 'value') for col in df.columns]
-)
-def update_columns(n_clicks, *new_column_names):
-    if n_clicks > 0:
-        return [{'name': new_name, 'id': col} for new_name, col in zip(new_column_names, df.columns)]
-    return [{'name': col, 'id': col} for col in df.columns]
-
-# Callback to update the RadioItems styles
-@app.callback(
-    Output('data-mode', 'options'),
-    Input('data-mode', 'value')
-)
-def update_radio_styles(selected_value):
-    options = [
-        {'label': 'Live', 'value': 'live'},
-        {'label': 'Extract', 'value': 'extract'}
-    ]
-    for option in options:
-        if option['value'] == selected_value:
-            option['label'] = html.Span(
-                option['label'],
-                style={'color': '#FFFFFF', 'backgroundColor': '#CC0000', 'padding': '5px 15px', 'borderRadius': '10px'}
-            )
-        else:
-            option['label'] = html.Span(
-                option['label'],
-                style={'color': '#000000', 'backgroundColor': '#ECECEC', 'padding': '5px 15px', 'borderRadius': '10px'}
-            )
-    return options
-
-# Register the layout with the Dash app
-app.layout = layout

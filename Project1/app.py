@@ -1,15 +1,4 @@
-import dash
-from dash import dcc, html
+from dash import Dash
 
-# Initialize the Dash app
-app = dash.Dash(__name__)
-
-# Import the layout from homepage.py
-from layouts.homepage import layout
-
-# Set the layout of the app
-app.layout = layout
-
-# Run the app
-if __name__ == '__main__':
-    app.run_server(debug=True)
+app = Dash(__name__, suppress_callback_exceptions=True)
+server = app.server
