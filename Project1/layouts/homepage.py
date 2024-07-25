@@ -96,7 +96,10 @@ layout = html.Div(
                         'padding': '2px 5px',
                         'position': 'absolute',
                         'bottom': '10px',
-                        'right': '20px'
+                        'right': '20px',
+                        'backgroundColor': 'black',
+                        'color': 'white',
+                        'fontWeight': 'bold'
                     }
                 )
             ]
@@ -148,7 +151,10 @@ layout = html.Div(
                         'padding': '2px 5px',
                         'position': 'absolute',
                         'bottom': '10px',
-                        'right': '20px'
+                        'right': '20px',
+                        'backgroundColor': 'black',
+                        'color': 'white',
+                        'fontWeight': 'bold'
                     }
                 )
             ]
