@@ -60,13 +60,15 @@ layout = html.Div(
         html.Div(
             style={
                 'backgroundColor': '#E1E6FF',
-                'padding': '10px',
+                'height': '6%',
+                'padding': '8px',
                 'display': 'flex',
                 'justifyContent': 'space-between',
-                'alignItems': 'center',
+                'alignItems': 'left',
                 'flexWrap': 'nowrap',
                 'overflowX': 'auto',
-                'position': 'relative'
+                'position': 'relative', 
+                'borderRadius': '10px'
             },
             children=[
                 html.Div(
@@ -84,7 +86,7 @@ layout = html.Div(
                                    'height': '20px', 
                                    'fontSize': '12px', 
                                    'border': '1px solid #ccc', 
-                                   'borderRadius': '10px'}
+                                   'borderRadius': '8px'}
                         ),
                     ]
                 ) for col in df.columns
@@ -97,7 +99,7 @@ layout = html.Div(
                         'fontSize': '12px',
                         'padding': '2px 5px',
                         'position': 'absolute',
-                        'bottom': '0px',
+                        'bottom': '10px',
                         'right': '20px'
                     }
                 )
