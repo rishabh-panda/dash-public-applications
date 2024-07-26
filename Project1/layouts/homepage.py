@@ -3,14 +3,16 @@ from data.data_loader import df
 
 # Define the layout of the homepage
 layout = html.Div(
-    style={'backgroundColor': '#FFFFFF', 'height': '100vh', 'fontFamily': 'Arial'},
+    style={'backgroundColor': '#FFFFFF', 'height': '100vh', 'fontFamily': 'Arial', 'padding': '20px'},
     children=[
         # Master Header Container
         html.Div(
             style={
                 'backgroundColor': '#FFFFFF',
+                'border': '1px solid #ccc',
+                'borderRadius': '10px',
                 'padding': '20px',
-                'height': '5%',
+                'height': '3%',
                 'display': 'flex',
                 'alignItems': 'center',
                 'justifyContent': 'space-between'
@@ -31,7 +33,7 @@ layout = html.Div(
                     value='live',
                     labelStyle={
                         'display': 'inline-block',
-                        'margin': '0 10px',
+                        'margin': '0 7px',
                         'padding': '5px 15px',
                         'border': '1px solid #ccc',
                         'borderRadius': '10px',
@@ -54,6 +56,7 @@ layout = html.Div(
         # Column Renaming Inputs Container
         html.Div(
             style={
+                'marginTop': '10px',
                 'backgroundColor': '#E1E1E1',
                 'border': '1px solid #ccc',
                 'height': '6%',
@@ -63,7 +66,7 @@ layout = html.Div(
                 'alignItems': 'left',
                 'flexWrap': 'nowrap',
                 'overflowX': 'auto',
-                'position': 'relative', 
+                'position': 'relative',
                 'borderRadius': '10px'
             },
             children=[
@@ -163,11 +166,14 @@ layout = html.Div(
         # Table Container
         html.Div(
             style={
-                'backgroundColor': '#FFFFFF',
+                'marginTop': '25px',
+                'backgroundColor': '#707070',
+                'border': '1px solid #656565',
+                'borderRadius': '10px',
                 'padding': '20px',
-                'height': '70%',
+                'height': '60%',
                 'overflow': 'auto',
-                'fontFamily': 'Arial'
+                'fontFamily': 'Arial',
             },
             children=[
                 dash_table.DataTable(
@@ -189,7 +195,7 @@ layout = html.Div(
                     style_data_conditional=[
                         {
                             'if': {'row_index': 'odd'},
-                            'backgroundColor': '#E1E6FF'
+                            'backgroundColor': '#E1E1E1'
                         },
                         {
                             'if': {'row_index': 'even'},
@@ -198,7 +204,28 @@ layout = html.Div(
                     ],
                     sort_action='native',  # Enable sorting on all columns
                     sort_mode='multi'  # Enable sorting on multiple columns
-                )
+                ),
+                dcc.Store(id='stored-data')
+            ]
+        ),
+
+        # Download Button
+        html.Div(
+            style={'textAlign': 'right', 'marginTop': '10px'},
+            children=[
+                html.Button(
+                    'Download CSV',
+                    id='download-button',
+                    n_clicks=0,
+                    style={
+                        'fontSize': '12px',
+                        'padding': '2px 5px',
+                        'backgroundColor': 'black',
+                        'color': 'white',
+                        'fontWeight': 'bold'
+                    }
+                ),
+                dcc.Download(id='download-data')
             ]
         )
     ]
